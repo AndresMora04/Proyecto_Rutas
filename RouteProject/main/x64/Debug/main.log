@@ -1,0 +1,14 @@
+﻿  main.cpp
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,51): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,51): warning C4244:         with
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,51): warning C4244:         [
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,51): warning C4244:             T=unsigned int
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,51): warning C4244:         ]
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,31): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,31): warning C4244:         with
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,31): warning C4244:         [
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,31): warning C4244:             T=unsigned int
+C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\main\main.cpp(15,31): warning C4244:         ]
+  Map.cpp
+  Generating Code...
+  main.vcxproj -> C:\Users\morit\OneDrive\Escritorio\Progra 1.0\Proyecto_Rutas\RouteProject\x64\Debug\main.exe
