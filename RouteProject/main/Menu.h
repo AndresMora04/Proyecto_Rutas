@@ -4,7 +4,6 @@
 #include <iostream>
 using namespace sf;
 using namespace std;
-
 class Menu {
 public:
     Menu(RenderWindow& win, float width, float height); // Constructor con la ventana
@@ -31,9 +30,6 @@ private:
     void createColorPalette();
     void createButtons();
     void handleButtonClick(Vector2i mousePos, RouteManager& routeManager);
-
-    void promptDeleteRoute(RouteManager& routeManager);   // Nuevo método para eliminar ruta
-    void promptDeletePoint(RouteManager& routeManager);   // Nuevo método para eliminar punto
 
     bool deleteRouteSelected = false;
     bool deletePointSelected = false;

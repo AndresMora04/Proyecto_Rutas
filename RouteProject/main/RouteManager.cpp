@@ -1,7 +1,6 @@
 #include "RouteManager.h"
 #include <fstream>
 #include <iostream>
-
 void RouteManager::addPoint(float x, float y, Color color, const string& name) {
     if (routes.empty()) {
         routes.emplace_back();  // Crear una nueva ruta si no existen rutas
@@ -9,7 +8,7 @@ void RouteManager::addPoint(float x, float y, Color color, const string& name) {
     routes.back().emplace_back(x, y, color, name);  // Agregar el punto a la última ruta
 }
 
-void RouteManager::draw(sf::RenderWindow& window) {
+void RouteManager::draw(RenderWindow& window) {
     // Dibuja las rutas
     for (auto& route : routes) {
         // Dibujar puntos de cada ruta
@@ -21,18 +20,25 @@ void RouteManager::draw(sf::RenderWindow& window) {
         auto it = route.begin();
         for (auto nextIt = ++route.begin(); nextIt != route.end(); ++it, ++nextIt) {
             // Aquí usamos las posiciones de los puntos para dibujar la curva
-            sf::VertexArray curve(sf::LinesStrip);
+            VertexArray curve(sf::LinesStrip);
 
-            // Calculamos una curva Bézier cuadrática entre tres puntos: el punto anterior, el punto actual y el siguiente
-            sf::Vector2f P0 = it->shape.getPosition();
-            sf::Vector2f P1 = it->shape.getPosition() + sf::Vector2f(50.0f, 50.0f);  // Aumentamos el desplazamiento para hacer la curva más notoria
-            sf::Vector2f P2 = nextIt->shape.getPosition();
+            // Definimos los puntos de control para la curva cúbica
+            Vector2f P0 = it->shape.getPosition();  // Punto anterior
+            Vector2f P1 = it->shape.getPosition() + Vector2f(50.0f, 50.0f);  // Primer punto de control
+            Vector2f P2 = nextIt->shape.getPosition() + Vector2f(-50.0f, -50.0f);  // Segundo punto de control
+            Vector2f P3 = nextIt->shape.getPosition();  // Punto siguiente
 
             // Usamos t para interpolar entre los puntos (desde t = 0 hasta t = 1)
             for (float t = 0; t <= 1; t += 0.02f) {  // Reducimos el paso para más puntos intermedios y suavizar la curva
-                float x = (1 - t) * (1 - t) * P0.x + 2 * (1 - t) * t * P1.x + t * t * P2.x;
-                float y = (1 - t) * (1 - t) * P0.y + 2 * (1 - t) * t * P1.y + t * t * P2.y;
-                curve.append(sf::Vertex(sf::Vector2f(x, y), sf::Color::White));
+                float x = (1 - t) * (1 - t) * (1 - t) * P0.x
+                    + 3 * (1 - t) * (1 - t) * t * P1.x
+                    + 3 * (1 - t) * t * t * P2.x
+                    + t * t * t * P3.x;
+                float y = (1 - t) * (1 - t) * (1 - t) * P0.y
+                    + 3 * (1 - t) * (1 - t) * t * P1.y
+                    + 3 * (1 - t) * t * t * P2.y
+                    + t * t * t * P3.y;
+                curve.append(sf::Vertex(Vector2f(x, y), Color::White));
             }
 
             // Dibuja la curva en la ventana
@@ -42,16 +48,16 @@ void RouteManager::draw(sf::RenderWindow& window) {
 
     // Dibujar los nombres de las rutas solo si se han cargado
     if (!routeNames.empty()) {
-        sf::Font font;
+        Font font;
         if (!font.loadFromFile("C:\\Users\\morit\\OneDrive\\Escritorio\\Progra 1.0\\Proyecto_Rutas\\RouteProject\\Fotos\\OldLondon.ttf")) {
-            std::cerr << "No se pudo cargar la fuente.\n";
+            cout << "No se pudo cargar la fuente.\n";
             return;
         }
 
         float yPosition = 10.0f;  // Posición vertical inicial para mostrar los nombres
 
         for (const auto& name : routeNames) {
-            sf::Text routeNameText;
+            Text routeNameText;
             routeNameText.setFont(font);
             routeNameText.setString(name);
             routeNameText.setCharacterSize(20);
@@ -87,9 +93,9 @@ void RouteManager::checkMouseHover(Vector2i mousePos, RenderWindow& window) {
 void RouteManager::saveRoutesToFile(const std::string& filename, const std::string& routeName) {
     addRouteName(routeName);  // Almacena el nombre de la ruta
 
-    std::ofstream file(filename, std::ios::app);
+    std::ofstream file(filename, ios::app);
     if (!file.is_open()) {
-        std::cerr << "Error al abrir el archivo para guardar las rutas.\n";
+        cout << "Error al abrir el archivo para guardar las rutas.\n";
         return;
     }
 
@@ -108,11 +114,10 @@ void RouteManager::saveRoutesToFile(const std::string& filename, const std::stri
     routeNames.clear();
 }
 
-
 void RouteManager::loadRoutesFromFile(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Error al abrir el archivo para cargar las rutas.\n";
+        cout << "Error al abrir el archivo para cargar las rutas.\n";
         return;
     }
 
@@ -126,6 +131,7 @@ void RouteManager::loadRoutesFromFile(const string& filename) {
             continue;  // Ignorar líneas vacías o comentarios
         }
 
+        // Si la línea no tiene números, es el nombre de la ruta
         if (line.find_first_of("0123456789") == string::npos) {
             currentRouteName = line;  // Nombre de la ruta
             routeNames.push_back(currentRouteName); // Añadir nombre de la ruta
@@ -139,10 +145,11 @@ void RouteManager::loadRoutesFromFile(const string& filename) {
 
             size_t pos = line.find_first_of("0123456789");
             if (pos != string::npos) {
-                name = line.substr(0, pos);
-                line = line.substr(pos);
+                name = line.substr(0, pos); // Nombre del punto
+                line = line.substr(pos);    // El resto es el valor de las coordenadas y color
             }
 
+            // Extraer coordenadas y colores
             pos = line.find(' ');
             x = stof(line.substr(0, pos));
             line = line.substr(pos + 1);
@@ -161,7 +168,10 @@ void RouteManager::loadRoutesFromFile(const string& filename) {
 
             b = stoi(line);
 
-            routes.back().emplace_back(x, y, Color(r, g, b), name);
+            // Verificar que las coordenadas estén dentro del rango de la ventana
+            if (x >= 0 && x <= 800 && y >= 0 && y <= 600) {  // 800x600 es un ejemplo de resolución
+                routes.back().emplace_back(x, y, Color(r, g, b), name);
+            }
         }
     }
     file.close();
@@ -169,9 +179,16 @@ void RouteManager::loadRoutesFromFile(const string& filename) {
 
 void RouteManager::deleteRoute(int index) {
     if (index >= 0 && index < routes.size()) {
-        auto it = routes.begin();
-        advance(it, index);
-        routes.erase(it);
+        auto routeIt = routes.begin();
+        auto nameIt = routeNames.begin();
+
+        // Avanzamos a la ruta y su nombre correspondiente
+        advance(routeIt, index);
+        advance(nameIt, index);
+
+        // Elimina la ruta y el nombre correspondiente
+        routes.erase(routeIt);
+        routeNames.erase(nameIt);
     }
 }
 
@@ -191,56 +208,67 @@ void RouteManager::deletePoint(int routeIndex, const string& pointName) {
 
 void RouteManager::handleClickDelete(Vector2i mousePos, bool deleteRoute, bool deletePoint) {
     if (deleteRoute) {
-        // Si la opción "Eliminar Ruta" está activada
-        for (auto routeIt = routes.begin(); routeIt != routes.end(); ) {
+        // Itera sobre las rutas y los nombres de las rutas
+        auto routeIt = routes.begin();
+        auto nameIt = routeNames.begin();
+
+        while (routeIt != routes.end() && nameIt != routeNames.end()) {
             bool routeDeleted = false;
 
-            // Iterar sobre cada punto de la ruta para ver si se hizo clic en uno
-            for (const auto& point : *routeIt) {
-                if (point.shape.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    // Si se ha hecho clic en un punto de la ruta, elimina la ruta completa
+            // Itera sobre cada punto de la ruta para verificar si se hizo clic en uno de ellos
+            for (auto pointIt = routeIt->begin(); pointIt != routeIt->end(); ++pointIt) {
+                if (pointIt->shape.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    // Si se hizo clic en el punto, elimina la ruta y su nombre
                     routeIt = routes.erase(routeIt);  // Elimina la ruta completa
+                    nameIt = routeNames.erase(nameIt);  // Elimina el nombre de la ruta
                     routeDeleted = true;
-                    break;  // Salir del bucle si se eliminó la ruta
+                    break;  // Sale del bucle una vez que la ruta ha sido eliminada
                 }
             }
 
             if (!routeDeleted) {
-                ++routeIt;  // Continuar a la siguiente ruta si no se eliminó ninguna
+                ++routeIt;  // Si no se eliminó ninguna ruta, pasa a la siguiente
+                ++nameIt;   // Avanza al siguiente nombre
             }
         }
 
-        // Después de eliminar la ruta, guarda las rutas actualizadas en el archivo
+        // Guarda las rutas actualizadas después de eliminar
         updateRoutesInFile("C:\\Users\\morit\\OneDrive\\Escritorio\\Progra 1.0\\Proyecto_Rutas\\RouteProject\\Fotos\\rutas.txt");
     }
     else if (deletePoint) {
-        // Si la opción "Eliminar Punto" está activada
+        // Eliminar punto: iterar sobre rutas y eliminar punto seleccionado
         for (auto routeIt = routes.begin(); routeIt != routes.end(); ++routeIt) {
             for (auto pointIt = routeIt->begin(); pointIt != routeIt->end(); ++pointIt) {
                 if (pointIt->shape.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    // Si se hizo clic en el punto, elimina solo el punto
+                    // Si se hace clic en el punto, eliminarlo de la ruta
                     routeIt->erase(pointIt);
                     break;  // Salir del bucle después de eliminar el punto
                 }
             }
         }
 
-        // Después de eliminar el punto, guarda las rutas actualizadas en el archivo
+        // Guarda las rutas actualizadas después de eliminar el punto
         updateRoutesInFile("C:\\Users\\morit\\OneDrive\\Escritorio\\Progra 1.0\\Proyecto_Rutas\\RouteProject\\Fotos\\rutas.txt");
     }
 }
 
-
 void RouteManager::updateRoutesInFile(const string& filename) {
     ofstream file(filename, ios::trunc);  // Abre en modo trunc para sobrescribir el archivo
     if (!file.is_open()) {
-        cerr << "Error al abrir el archivo para actualizar las rutas.\n";
+        cout << "Error al abrir el archivo para actualizar las rutas.\n";
         return;
     }
 
     // Escribe las rutas actuales en el archivo
+    auto routeNameIt = routeNames.begin();  // Iterador para los nombres de rutas
     for (const auto& route : routes) {
-        file << "Route\n";
+        if (routeNameIt != routeNames.end()) {
+            // Escribe el nombre de la ruta antes de los puntos
+            file << *routeNameIt << "\n";
+            ++routeNameIt;  // Avanza al siguiente nombre de ruta
+        }
+
+        // Escribe los puntos de la ruta
         for (const auto& point : route) {
             file << point.name << " "
                 << point.shape.getPosition().x << " "

@@ -2,10 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <string>
-
 using namespace sf;
 using namespace std;
-
 struct Point {
     CircleShape shape;
     string name;
@@ -35,5 +33,5 @@ public:
     }
 private:
     list<list<Point>> routes;  // Lista de rutas, cada una siendo una lista de puntos
-    list<std::string> routeNames; // Lista de nombres de rutas
+    list<string> routeNames; // Lista de nombres de rutas
 };

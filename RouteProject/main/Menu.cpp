@@ -1,14 +1,13 @@
 #include "Menu.h"
 #include <iostream>
-
-Menu::Menu(RenderWindow& win,float width, float height) : window(win), isLoadEnabled(true) { // Inicializa isLoadEnabled en true
+Menu::Menu(RenderWindow& win,float width, float height) : window(win), isLoadEnabled(true) { 
     menuShape.setSize(sf::Vector2f(200, height));
     menuShape.setFillColor(sf::Color(100, 100, 100));
     menuShape.setPosition(width - 200, 0);
 
     // Cargar la fuente
     if (!font.loadFromFile("C:\\Users\\morit\\OneDrive\\Escritorio\\Progra 1.0\\Proyecto_Rutas\\RouteProject\\Fotos\\OldLondon.ttf")) {
-        std::cerr << "Error al cargar la fuente\n";
+        cout << "Error al cargar la fuente\n";
     }
 
     // Inicializa el texto que se mostrará para la entrada de la ruta
@@ -80,7 +79,7 @@ void Menu::draw(RenderWindow& window) {
 
     for (int i = 0; i < 7; ++i) {
         // Solo dibujamos los botones de eliminar cuando isLoadEnabled es verdadero
-        if (isLoadEnabled || i < 3 && i>0 || i == 4) { // 1 y 2 son los botones de Guardar, y Salir
+        if (isLoadEnabled || i < 3 && i>0 || i == 4) { // 1,2,4 son los botones de eliminar ruta, punto y cargar
             window.draw(buttons[i]);
             window.draw(buttonLabels[i]);
         }
@@ -102,7 +101,6 @@ void Menu::handleMouseClick(Vector2i mousePos, RouteManager& routeManager) {
     }
 
     if (deletePointSelected) {
-        std::cout << "Haz clic sobre el punto a eliminar.\n";
         routeManager.handleClickDelete(mousePos, false, true);
     }
 
@@ -159,7 +157,6 @@ void Menu::handleButtonClick(Vector2i mousePos, RouteManager& routeManager) {
 void Menu::toggleColorPalette() {
     colorsVisible = !colorsVisible;
     selectedColor = Color::White;
-    std::cout << (colorsVisible ? "Paleta de colores visible.\n" : "Paleta de colores oculta.\n");
 }
 
 void Menu::toggleLoadFunction(RouteManager& routeManager) {
@@ -183,14 +180,14 @@ bool Menu::isDeletePointSelected() const {
     return deletePointSelected;
 }
 
-std::string Menu::getRouteNameInput() {
+string Menu::getRouteNameInput() {
     std::string routeName;
     Text instructionText;
     Font font;
 
     // Cargar la fuente
     if (!font.loadFromFile("C:\\Users\\morit\\OneDrive\\Escritorio\\Progra 1.0\\Proyecto_Rutas\\RouteProject\\Fotos\\OldLondon.ttf")) {
-        std::cerr << "Error al cargar la fuente\n";
+        cout << "Error al cargar la fuente\n";
         return "";
     }
 

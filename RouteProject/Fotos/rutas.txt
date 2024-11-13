@@ -1,4 +1,2 @@
-Route
- fvfv  290 239 255 255 0
-fgv e  138 173 255 255 0
-rfe  272 144 255 255 0
+Route Mexico
+Cancun   274 253 255 255 0

@@ -24,22 +24,7 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TouristSpot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TouristRoute.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RouteManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PaletteColors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,22 +35,7 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TouristSpot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TouristRoute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RouteManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PaletteColors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
