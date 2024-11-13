@@ -138,13 +138,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicInterface.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="PaletteColors.cpp" />
+    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="RouteManager.cpp" />
+    <ClCompile Include="TouristRoute.cpp" />
+    <ClCompile Include="TouristSpot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GraphicInterface.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="PaletteColors.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="RouteManager.h" />
+    <ClInclude Include="TouristRoute.h" />
+    <ClInclude Include="TouristSpot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

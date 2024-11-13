@@ -7,7 +7,6 @@ class Map {
 public:
     Map(const string& filePath);
     void draw(RenderWindow& window);
-
 private:
     Texture mapTexture;
     Sprite mapSprite;
